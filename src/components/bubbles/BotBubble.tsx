@@ -148,7 +148,7 @@ export const BotBubble = (props: Props) => {
 
   onMount(() => {
     if (botMessageEl) {
-      botMessageEl.innerHTML = Marked.parse(props.message.message);
+      botMessageEl.innerHTML = Marked.parse(props.message);
       botMessageEl.querySelectorAll('a').forEach((link) => {
         link.target = '_blank';
       });
