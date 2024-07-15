@@ -3,6 +3,10 @@ import FAQWorkflow from "@/plugins/plugin_faq";
 const faqs = 
     [
         {
+            "question": "who is kevin amponsah",
+            "answer": "the emperor of mankind"
+        },
+        {
             "question": "HOW DO I BUY A SHIPPING CONTAINER?",
             "answer": "Simple, go to www.containerone.net and scroll down to type your zip code. Once done, choose the container you want and then add it to your cart. When finished, go to your cart page and you’ll have an option to pay by card or check/ACH. Follow the steps in the checkout and you’ll have your order placed in no time. Learn how to buy a shipping container online here."
         },

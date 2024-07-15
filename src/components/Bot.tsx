@@ -18,7 +18,7 @@ import { CancelButton } from './buttons/CancelButton';
 import { cancelAudioRecording, startAudioRecording, stopAudioRecording } from '@/utils/audioRecording';
 import { LeadCaptureBubble } from '@/components/bubbles/LeadCaptureBubble';
 import { removeLocalStorageChatHistory, getLocalStorageChatflow, setLocalStorageChatflow } from '@/utils';
-
+import C1Workflow from '@/workflows/c1_workflow';
 export type FileEvent<T = EventTarget> = {
   target: T;
 };
@@ -445,6 +445,14 @@ export const Bot = (botProps: BotProps & { class?: string }) => {
     } else {
       setMessages((prevMessages) => [...prevMessages, { message: '', type: 'apiMessage' }]);
     }
+
+
+     const answer = C1Workflow(body.question);
+
+     console.log(answer);
+
+      body.question = "return this message back: " + answer;
+
 
     const result = await sendMessageQuery({
       chatflowid: props.chatflowid,
