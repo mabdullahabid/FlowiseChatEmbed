@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flowise Chatbot FullPage</title>
+  <style>
+    body {
+      margin: 0;
+    }
+  </style>
+</head>
+<body>
+  <script type="module">
+    import Chatbot from './dist/web.js';
+    Chatbot.initFull({
+      chatflowid: '4c2f7bf5-32be-4b93-92f5-f8116c5d7980',
+      apiHost: 'https://mmx.autonomoustech.io',
+      theme: {
+        chatWindow: {
+          // height: 700, don't set height
+          // width: 400, don't set width
+        },
+      },
+    });
+  </script>
+  <flowise-fullchatbot></flowise-fullchatbot>
+</body>
+</html>
