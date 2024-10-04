@@ -42,8 +42,6 @@ export const BotBubble = (props: Props) => {
   const [thumbsUpColor, setThumbsUpColor] = createSignal(props.feedbackColor ?? defaultFeedbackColor); // default color
   const [thumbsDownColor, setThumbsDownColor] = createSignal(props.feedbackColor ?? defaultFeedbackColor); // default color
 
-  
-  
   const downloadFile = async (fileAnnotation: any) => {
     try {
       const response = await sendFileDownloadQuery({
@@ -306,7 +304,6 @@ export const BotBubble = (props: Props) => {
               ) : null}
 
               <ShareTextButton onClick={shareMessage} />
-
             </div>
             <Show when={showFeedbackContentDialog()}>
               <FeedbackContentDialog
