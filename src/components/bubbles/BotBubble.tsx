@@ -3,7 +3,7 @@ import { Avatar } from '../avatars/Avatar';
 import { Marked } from '@ts-stack/markdown';
 import { FeedbackRatingType, sendFeedbackQuery, sendFileDownloadQuery, updateFeedbackQuery } from '@/queries/sendMessageQuery';
 import { MessageType } from '../Bot';
-import { CopyToClipboardButton, ThumbsDownButton, ThumbsUpButton } from '../buttons/FeedbackButtons';
+import { CopyToClipboardButton, ShareTextButton, ThumbsDownButton, ThumbsUpButton } from '../buttons/FeedbackButtons';
 import FeedbackContentDialog from '../FeedbackContentDialog';
 import { AgentReasoningBubble } from './AgentReasoningBubble';
 
@@ -42,6 +42,8 @@ export const BotBubble = (props: Props) => {
   const [thumbsUpColor, setThumbsUpColor] = createSignal(props.feedbackColor ?? defaultFeedbackColor); // default color
   const [thumbsDownColor, setThumbsDownColor] = createSignal(props.feedbackColor ?? defaultFeedbackColor); // default color
 
+  
+  
   const downloadFile = async (fileAnnotation: any) => {
     try {
       const response = await sendFileDownloadQuery({
@@ -219,6 +221,22 @@ export const BotBubble = (props: Props) => {
     }
   });
 
+  const shareMessage = async () => {
+    const text = botMessageEl ? botMessageEl?.textContent : '';
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Shared Message',
+          text: text!,
+        });
+      } catch (error) {
+        console.error('Error sharing message:', error);
+      }
+    } else {
+      alert('Share API is not supported in this browser');
+    }
+  };
+
   return (
     <div>
       <div class="flex flex-row justify-start mb-2 items-start host-container" style={{ 'margin-right': '50px' }}>
@@ -286,6 +304,9 @@ export const BotBubble = (props: Props) => {
                   onClick={onThumbsDownClick}
                 />
               ) : null}
+
+              <ShareTextButton onClick={shareMessage} />
+
             </div>
             <Show when={showFeedbackContentDialog()}>
               <FeedbackContentDialog
