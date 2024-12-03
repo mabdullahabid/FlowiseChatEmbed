@@ -3,7 +3,7 @@ import { Avatar } from '../avatars/Avatar';
 import { Marked } from '@ts-stack/markdown';
 import { FeedbackRatingType, sendFeedbackQuery, sendFileDownloadQuery, updateFeedbackQuery } from '@/queries/sendMessageQuery';
 import { MessageType } from '../Bot';
-import { CopyToClipboardButton, ThumbsDownButton, ThumbsUpButton } from '../buttons/FeedbackButtons';
+import { CopyToClipboardButton, ShareTextButton, ThumbsDownButton, ThumbsUpButton } from '../buttons/FeedbackButtons';
 import FeedbackContentDialog from '../FeedbackContentDialog';
 import { AgentReasoningBubble } from './AgentReasoningBubble';
 
@@ -152,6 +152,11 @@ export const BotBubble = (props: Props) => {
       botMessageEl.querySelectorAll('a').forEach((link) => {
         link.target = '_blank';
       });
+
+      botMessageEl.querySelectorAll('img').forEach((img) => {
+        setResponsiveImageSize(img);
+      });
+
       if (props.fileAnnotations && props.fileAnnotations.length) {
         for (const annotations of props.fileAnnotations) {
           const button = document.createElement('button');
@@ -183,6 +188,52 @@ export const BotBubble = (props: Props) => {
       botDetailsEl.open = false;
     }
   });
+
+  const setResponsiveImageSize = (img: any) => {
+    const screenWidth = window.innerWidth;
+    let maxWidth;
+    let aspectRatio = 1.5;
+
+    if (img.naturalWidth && img.naturalHeight) {
+      aspectRatio = img.naturalWidth / img.naturalHeight;
+    }
+
+    if (screenWidth <= 480) {
+      maxWidth = 150;
+    } else if (screenWidth <= 768) {
+      maxWidth = 200;
+    } else {
+      maxWidth = 300;
+    }
+
+    img.style.width = `${maxWidth}px`;
+    img.style.height = `${maxWidth / aspectRatio}px`;
+    img.style.objectFit = 'cover';
+  };
+
+  window.addEventListener('resize', () => {
+    if (botMessageEl) {
+      botMessageEl.querySelectorAll('img').forEach((img) => {
+        setResponsiveImageSize(img);
+      });
+    }
+  });
+
+  const shareMessage = async () => {
+    const text = botMessageEl ? botMessageEl?.textContent : '';
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Shared Message',
+          text: text!,
+        });
+      } catch (error) {
+        console.error('Error sharing message:', error);
+      }
+    } else {
+      alert('Share API is not supported in this browser');
+    }
+  };
 
   return (
     <div>
@@ -251,6 +302,8 @@ export const BotBubble = (props: Props) => {
                   onClick={onThumbsDownClick}
                 />
               ) : null}
+
+              <ShareTextButton onClick={shareMessage} />
             </div>
             <Show when={showFeedbackContentDialog()}>
               <FeedbackContentDialog
